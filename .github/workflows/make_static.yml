@@ -43,8 +43,7 @@ jobs:
 
       - name: Build app
         run:
-          cd frontend
-          npm run build
+          cd frontend && npm run build
 
       # Create an artifact, and upload it to github-pg branch
       - name: Upload artifact
