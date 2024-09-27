@@ -1,0 +1,82 @@
+[project]
+name = "assignments-backend"
+version = "0.1.0"
+description = "Backend part of the Assignments project"
+authors = [
+    {name = "Pavlo Pohorieltsev", email = "49622129+makisukurisu@users.noreply.github.com"},
+]
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "sqlmodel>=0.0.22",
+    "pydantic-settings>=2.5.2",
+]
+requires-python = ">3.12"
+license = {text = "MIT"}
+
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6.7",
+]
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+migrate.cmd = "python src/assignments_backend/database.py"
+migrate.env = {PYTHONPATH = "src"}
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = [
+  "UP",
+  "E",
+  "W",
+  "I",
+  "C90",
+  "N",
+  "ANN",
+  "ASYNC",
+  "BLE",
+  "FBT",
+  "B",
+  "A",
+  "C4",
+  "DTZ",
+  "T10",
+  "FA",
+  "ISC",
+  "ICN",
+  "INP",
+  "PIE",
+  "T20",
+  "PYI",
+  "Q",
+  "RET",
+  "SLF",
+  "SIM",
+  "TID",
+  "TCH",
+  "ARG",
+  "TD",
+  "FIX",
+  "ERA",
+  "PL",
+  "RUF",
+]
+ignore = [
+  "ISC001",
+  "N999",
+  "ERA001",
+  "RUF012",
+  "ANN101",
+  "ANN102",
+  "FBT001",
+  "FBT002",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
