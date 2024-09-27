@@ -1,0 +1,596 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Assignments Backend",
+        "description": "This is a simple API to manage assignments",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/assignments/": {
+            "get": {
+                "tags": [
+                    "Assignments",
+                    "Assignments Public"
+                ],
+                "summary": "Get Assignments",
+                "operationId": "get_assignments_assignments__get",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "title": "Limit"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "Offset"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "created_at",
+                                "assigned_at",
+                                "due_to"
+                            ],
+                            "type": "string",
+                            "default": "created_at",
+                            "title": "Order By"
+                        }
+                    },
+                    {
+                        "name": "order_direction",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string",
+                            "default": "desc",
+                            "title": "Order Direction"
+                        }
+                    },
+                    {
+                        "name": "X-Student-Code",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Student-Code"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssignmentsListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Assignments",
+                    "Assignments Management"
+                ],
+                "summary": "Create Assignment",
+                "operationId": "create_assignment_assignments__post",
+                "parameters": [
+                    {
+                        "name": "X-Editor-Code",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Editor-Code"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAssignment"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Assignment"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assignments/{assignment_id}": {
+            "get": {
+                "tags": [
+                    "Assignments",
+                    "Assignments Public"
+                ],
+                "summary": "Get Assignment",
+                "operationId": "get_assignment_assignments__assignment_id__get",
+                "parameters": [
+                    {
+                        "name": "assignment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid4",
+                            "title": "Assignment Id"
+                        }
+                    },
+                    {
+                        "name": "X-Student-Code",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Student-Code"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Assignment"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/": {
+            "get": {
+                "tags": [
+                    "Groups",
+                    "Groups Public"
+                ],
+                "summary": "Get Group",
+                "operationId": "get_group_groups__get",
+                "parameters": [
+                    {
+                        "name": "X-Student-Code",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Student-Code"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Groups",
+                    "Groups Management"
+                ],
+                "summary": "Create Group",
+                "operationId": "create_group_groups__post",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateGroup"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Groups",
+                    "Groups Management"
+                ],
+                "summary": "Update Group",
+                "operationId": "update_group_groups__put",
+                "parameters": [
+                    {
+                        "name": "X-Editor-Code",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Editor-Code"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateGroup"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Assignment": {
+                "properties": {
+                    "assignment_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Assignment Id"
+                    },
+                    "group_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Group Id"
+                    },
+                    "issuer": {
+                        "type": "string",
+                        "title": "Issuer"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "Short preview of the description, plain text"
+                    },
+                    "full_description": {
+                        "type": "string",
+                        "title": "Full Description",
+                        "description": "Base64 encoded description"
+                    },
+                    "assigned_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Assigned At"
+                    },
+                    "due_to": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Due To"
+                    },
+                    "mandatory": {
+                        "type": "boolean",
+                        "title": "Mandatory"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "assignment_id",
+                    "group_id",
+                    "issuer",
+                    "title",
+                    "description",
+                    "full_description",
+                    "assigned_at",
+                    "due_to",
+                    "mandatory"
+                ],
+                "title": "Assignment"
+            },
+            "AssignmentsListResponse": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "content": {
+                        "items": {
+                            "$ref": "#/components/schemas/Assignment"
+                        },
+                        "type": "array",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "meta",
+                    "content"
+                ],
+                "title": "AssignmentsListResponse"
+            },
+            "CreateAssignment": {
+                "properties": {
+                    "issuer": {
+                        "type": "string",
+                        "title": "Issuer"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "full_description": {
+                        "type": "string",
+                        "title": "Full Description"
+                    },
+                    "assigned_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Assigned At"
+                    },
+                    "due_to": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Due To"
+                    },
+                    "mandatory": {
+                        "type": "boolean",
+                        "title": "Mandatory"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "issuer",
+                    "title",
+                    "description",
+                    "full_description",
+                    "due_to",
+                    "mandatory"
+                ],
+                "title": "CreateAssignment"
+            },
+            "CreateGroup": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "editor_code": {
+                        "type": "string",
+                        "minLength": 8,
+                        "title": "Editor Code"
+                    },
+                    "student_code": {
+                        "type": "string",
+                        "minLength": 8,
+                        "title": "Student Code"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "editor_code",
+                    "student_code"
+                ],
+                "title": "CreateGroup"
+            },
+            "Group": {
+                "properties": {
+                    "group_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Group Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "editor_code": {
+                        "type": "string",
+                        "title": "Editor Code"
+                    },
+                    "student_code": {
+                        "type": "string",
+                        "title": "Student Code"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "group_id",
+                    "name",
+                    "editor_code",
+                    "student_code",
+                    "created_at"
+                ],
+                "title": "Group"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "PaginationMeta": {
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "title": "Total"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "title": "Limit"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "title": "Offset"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "total",
+                    "limit",
+                    "offset"
+                ],
+                "title": "PaginationMeta"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
