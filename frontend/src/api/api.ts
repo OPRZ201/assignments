@@ -2,9 +2,12 @@ import OpenAPIClientAxios from "openapi-client-axios";
 import type { Client, Paths, Components } from "./openapi";
 import { useAuthenticationStore } from "@/stores/authentication";
 
-const openAPIAxios = new OpenAPIClientAxios({ definition: 'http://localhost:8000/openapi.json', withServer: Number.parseInt(import.meta.env.VITE_SERVER_ID), });
+const openAPIAxios = new OpenAPIClientAxios({
+    definition: `${import.meta.env.VITE_API_URL}/openapi.json`, withServer: Number.parseInt(import.meta.env.VITE_SERVER_ID),
+});
 
-const client = await openAPIAxios.init<Client>();
+let client: Client | null = null;
+openAPIAxios.init<Client>().then((c) => { client = c; });
 
 export { openAPIAxios };
 
@@ -15,6 +18,10 @@ export async function getAssignments(
     order_by: Paths.GetAssignmentsAssignmentsGet.Parameters.OrderBy | string = "created_at",
     orderDirection: Paths.GetAssignmentsAssignmentsGet.Parameters.OrderDirection | string = "desc",
 ): Promise<Components.Schemas.AssignmentsListResponse> {
+    if (client === null) {
+        throw Error("Client is not initialized");
+    }
+
     const result = await client.get_assignments_assignments__get(
         {
             "X-Student-Code": useAuthenticationStore().getCode(),
@@ -33,6 +40,10 @@ export async function getAssignments(
 
 
 export async function getAssignment(assignmentId: string) {
+    if (client === null) {
+        throw Error("Client is not initialized");
+    }
+
     const result = await client.get_assignment_assignments__assignment_id__get(
         {
             "X-Student-Code": useAuthenticationStore().getCode(),
@@ -47,6 +58,10 @@ export async function getAssignment(assignmentId: string) {
 }
 
 export async function createAssignment(editorCode: string, assignment: Components.Schemas.CreateAssignment) {
+    if (client === null) {
+        throw Error("Client is not initialized");
+    }
+
     const result = await client.create_assignment_assignments__post(
         {
             "X-Editor-Code": editorCode,
