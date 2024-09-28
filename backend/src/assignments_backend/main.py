@@ -6,7 +6,7 @@ from assignments_backend.endpoints import router
 from assignments_backend.settings import settings
 
 app = FastAPI(
-    debug=False,
+    debug=settings.debug,
     title="Assignments Backend",
     description="This is a simple API to manage assignments",
     swagger_ui_parameters={
