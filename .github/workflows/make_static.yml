@@ -25,6 +25,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,17 +35,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: frontend
 
       - name: Load .env file
         uses: SpicyPizza/create-envfile@v2
         with:
           envkey_VITE_API_URL: ${{ vars.VITE_API_URL }}
           envkey_VITE_SERVER_ID: ${{ vars.VITE_SERVER_ID }}
+          directory: frontend
 
       - name: Build app
         run:
-          cd frontend
-          npm run build
+          npx vite build --base=${{ vars.VITE_BASE_URL }}
+        working-directory: frontend
 
       # Create an artifact, and upload it to github-pg branch
       - name: Upload artifact

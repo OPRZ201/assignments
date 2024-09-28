@@ -20,6 +20,10 @@ import Image from 'quill/formats/image';
 
 import "quill/dist/quill.core.css";
 import 'quill/dist/quill.snow.css';
+import '@/assets/css2.css';
+import '@/assets/icon.css';
+import '@/assets/tailwind_3_4_5.js';
+
 
 Quill.register({
     'modules/toolbar': Toolbar,
