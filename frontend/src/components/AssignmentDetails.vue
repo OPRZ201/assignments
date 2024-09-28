@@ -103,7 +103,7 @@ watch(
             Mark as Incomplete</VaButton
           >
         </VaCardActions>
-        <VaCard class="flex flex-column gap-2">
+        <VaCard class="flex flex-col gap-2">
           <h4 class="va-h4 text-center">Full Description</h4>
           <div id="viewer"></div>
         </VaCard>
