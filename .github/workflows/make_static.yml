@@ -50,7 +50,7 @@ jobs:
         working-directory: frontend
       
       - name: Create 404 page
-        run: copy index.html 404.html
+        run: cp index.html 404.html
         working-directory: frontend/dist
 
       # Create an artifact, and upload it to github-pg branch
