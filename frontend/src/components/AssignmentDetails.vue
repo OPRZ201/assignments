@@ -7,10 +7,24 @@ import { ref, watch } from 'vue'
 
 import { Base64 } from 'js-base64'
 
+function castProperty(key: string, value: string | boolean) {
+  if (typeof value === 'boolean') {
+    return value
+  }
+
+  switch (key) {
+    case 'assigned_at':
+    case 'due_to':
+      return LocalAssignment.convertDate(value)
+    default:
+      return value
+  }
+}
+
 function getAssignmentProperties(obj: Assignment) {
   const keys: (keyof Assignment)[] = ['issuer', 'description', 'assigned_at', 'due_to']
   return keys.map((key) => {
-    return { key: key.replace('_', ' '), value: obj[key] }
+    return { key: key.replace('_', ' '), value: castProperty(key, obj[key]) }
   })
 }
 

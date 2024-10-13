@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getAssignments } from '@/api/api'
 import type { Assignment } from '@/api/openapi'
-import { Assignment as LocalAssignment } from '@/assets/assignment'
+import AssignmentListItem from '@/components/AssignmentListItem.vue'
 import { reactive, ref, type Ref } from 'vue'
 
 const assignments: Ref<Assignment[]> = ref([])
@@ -16,6 +16,14 @@ const orderByOptions = [
 const orderDirectionOptions = [
   { value: 'asc', text: 'Ascending (1 => 10)' },
   { value: 'desc', text: 'Descending (10 => 1)' }
+]
+
+const pageSizeOptions = [
+  { value: 3, text: '3' },
+  { value: 5, text: '5' },
+  { value: 10, text: '10' },
+  { value: 15, text: '15' },
+  { value: 25, text: '25' }
 ]
 
 const meta = reactive({ total: 0, limit: 10, offset: 1 })
@@ -54,51 +62,29 @@ onMounted(() => {
             class="list__item"
             :to="`/assignment/${assignment.assignment_id}`"
           >
-            <VaListItemSection icon>
-              <VaIcon name="priority_high" color="#ff0000" v-if="assignment.mandatory" />
-              <VaIcon
-                name="self_improvement"
-                :color="LocalAssignment.getColorFromIssuer(assignment.issuer)"
-                v-if="!assignment.mandatory"
-              />
-              <VaIcon :color="LocalAssignment.getColorFromIssuer(assignment.issuer)" name="task" />
-            </VaListItemSection>
-            <VaListItemSection>
-              <VaListItemLabel :lines="3">
-                {{ assignment.issuer }} - {{ assignment.title }}
-              </VaListItemLabel>
-
-              <VaListItemLabel caption>
-                {{ assignment.description }}
-              </VaListItemLabel>
-            </VaListItemSection>
-            <VaListItemSection>
-              <VaListItemLabel>
-                Due To: {{ LocalAssignment.convertDate(assignment.due_to) }}
-              </VaListItemLabel>
-              <VaListItemLabel caption>
-                Assigned At: {{ LocalAssignment.convertDate(assignment.assigned_at) }}
-              </VaListItemLabel>
-            </VaListItemSection>
+            <AssignmentListItem :assignment="assignment" />
           </VaListItem>
         </VaList>
       </VaScrollContainer>
       <div class="grid gap-8 grid-cols-3 w-1/2 self-center items-stretch flex-1 grow">
-        <VaPopover message="Page size">
-          <VaCounter
-            ref="counter"
+        <div class="flex flex-col gap-2">
+          <p class="va-title va-text-primary">Page size</p>
+          <VaSelect
             v-model="meta.limit"
+            :options="pageSizeOptions"
             :disabled="loading"
+            text-by="text"
+            track-by="value"
+            value-by="value"
             v-on:update:model-value="
               () => {
                 meta.offset = 1
                 fetchAssignments()
               }
             "
-            min="1"
-            max="25"
+            class="max-h-10"
           />
-        </VaPopover>
+        </div>
         <div class="flex flex-col gap-2 flex items-center">
           <VaPagination
             v-model="meta.offset"
@@ -118,14 +104,17 @@ onMounted(() => {
             text-by="text"
             track-by="value"
             value-by="value"
+            class="max-h-10"
             v-on:update:model-value="fetchAssignments"
           />
           <VaSelect
             v-model="sorting.order_direction"
             :options="orderDirectionOptions"
+            :disabled="loading"
             text-by="text"
             track-by="value"
             value-by="value"
+            class="max-h-10"
             v-on:update:model-value="fetchAssignments"
           />
         </div>
