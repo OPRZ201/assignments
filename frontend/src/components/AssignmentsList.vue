@@ -57,8 +57,8 @@ onMounted(() => {
       <VaScrollContainer class="max-h-full" vertical>
         <VaList class="min-h-96">
           <VaListItem
-            v-for="(assignment, index) in assignments"
-            :key="index"
+            v-for="assignment in assignments"
+            :key="assignment.assignment_id"
             class="list__item"
             :to="`/assignment/${assignment.assignment_id}`"
           >
