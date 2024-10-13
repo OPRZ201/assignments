@@ -48,6 +48,10 @@ jobs:
         run:
           npx vite build --base=${{ vars.VITE_BASE_URL }}
         working-directory: frontend
+      
+      - name: Create 404 page
+        run: copy index.html 404.html
+        working-directory: frontend/dist
 
       # Create an artifact, and upload it to github-pg branch
       - name: Upload artifact

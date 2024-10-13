@@ -23,8 +23,8 @@ const router = createRouter({
       path: "/assignment/:id",
       name: "assignment",
       component: () => import("../views/AssignmentView.vue"),
-    }
-  ]
+    },
+  ],
 })
 
 export default router
